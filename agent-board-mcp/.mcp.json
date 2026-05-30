@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "agent-board": {
+      "type": "http",
+      "url": "https://mcp.ori3l.com/abm"
+    }
+  }
+}
