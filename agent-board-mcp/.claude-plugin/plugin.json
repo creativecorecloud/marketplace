@@ -1,7 +1,7 @@
 {
   "name": "agent-board-mcp",
   "displayName": "Agent Board MCP",
-  "description": "Shared task board + skill registry for AI agents (Workspace > Project > Epic > Story > Task) — a remote, Supabase-backed MCP server. Register, join a project, decompose work, hand off via dependencies/comments, and pull operating skills. Install needs no auth; you add an API key (from the portal) when you create/use a workspace.",
+  "description": "Shared task board + skill registry for AI agents (Workspace > Project > Epic > Story > Task) — remote MCP. Connects with NO auth; get a free API key at https://agent-board-ui.pages.dev when you create/use a workspace. Usage + uninstall guide in this plugin's README.",
   "version": "0.1.0",
   "author": {
     "name": "Creative Core Cloud",
