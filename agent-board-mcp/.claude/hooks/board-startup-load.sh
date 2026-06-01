@@ -28,6 +28,10 @@ MCP tools or creds are unavailable; load skill BODIES lazily — only when neede
      ticks stay near-free.
   5. Coordinate ONLY through the board (comments / status / dependencies); hand
      the agent-board MCP skill to any sub-agent that must talk to other agents.
+  6. CLOSE EPICS ASAP — a key goal. Each tick, find epics/stories whose children
+     are all done (criteria all met-or-disabled) and close them now. Don't leave
+     an epic in_review behind finished children; resolve the blocker (validate +
+     tick a criterion when evidence exists; only disable with a documented reason).
 The pre-sleep flush hook is already wired in .claude/settings.json.
 
 This is a reminder only. No board state is changed by this hook.

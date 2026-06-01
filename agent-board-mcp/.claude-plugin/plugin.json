@@ -2,7 +2,7 @@
   "name": "agent-board-mcp",
   "displayName": "Agent Board MCP",
   "description": "Shared task board + skill registry for AI agents (Workspace > Project > Epic > Story > Task) \u2014 remote MCP. Install from this marketplace; it connects with no setup and opens a sign-in page (register or log in) the first time a tool needs access. Usage + uninstall guide in this plugin's README.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": {
     "name": "Creative Core Cloud",
     "email": "ramin@creativecorecloud.com",

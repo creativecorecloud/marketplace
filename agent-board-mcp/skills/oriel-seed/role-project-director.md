@@ -21,6 +21,7 @@ live in `role-team-leader`; you operate one level up, across the whole project.)
    to real scope. Don't over-staff.
 
 ## Staffing
+- **Default to PARALLEL.** Independent epics/areas run concurrently, not one-at-a-time: staff up to **4** TLs/agents at once whenever the work has ≥2 non-conflicting streams, and keep all slots fed. Sequential is only for genuinely coupled work.
 - **One TL per substantial epic/area.** Spawn a TL by offering the user a **chip to open a
   NEW chat** led by that TL, briefed with the epic + its acceptance criteria + the skills it
   needs + scope. Cap: keep **≤4 active TLs** at once.
@@ -29,6 +30,15 @@ live in `role-team-leader`; you operate one level up, across the whole project.)
   lock the design as acceptance criteria before decomposition.
 - The **board (board MCP) is the coordination substrate** — every project / epic / story /
   task + status lives there; no side channels or state files.
+
+## Drive epics to closure — a primary goal
+- **Closing epics ASAP is one of your most important goals.** An epic stuck in `in_review`
+  with its children done is wasted, invisible progress. Each tick, scan for epics/stories
+  whose children are all done (or criteria all met-or-disabled) and **close them immediately**.
+- A child or criterion blocking closure gets resolved, not left: finish it, or if a criterion
+  was mis-scoped, fix or disable it **with a documented rationale** (never silently). Prefer
+  *validating and ticking* a criterion when the evidence exists over disabling it.
+- Treat "all children done but the epic is still open" as a defect to fix this tick.
 
 ## Manage, don't build
 - Run **common services** (or delegate to a TL): worktrees, merge to `develop`
