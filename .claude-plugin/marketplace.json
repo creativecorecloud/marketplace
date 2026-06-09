@@ -9,9 +9,9 @@
   },
   "plugins": [
     {
-      "name": "agent-board-mcp",
-      "source": "./agent-board-mcp",
-      "description": "Shared task board + skill registry for AI agents (Workspace > Project > Epic > Story > Task). Remote MCP at mcp.ori3l.com/abm + the agent-board operating skill."
+      "name": "oriel",
+      "source": "./oriel",
+      "description": "Oriel — agent control surface for the shared Agent Board (Workspace > Project > Epic > Story > Task). Remote MCP (OAuth) at mcp.ori3l.com/abm + the /oriel command (start project · start/stop loop · tick · check board · update-board)."
     }
   ]
 }
