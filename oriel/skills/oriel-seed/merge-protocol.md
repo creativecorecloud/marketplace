@@ -24,6 +24,11 @@ How finished work gets onto `develop` safely and promptly. The board is the sour
 - When unsure, do NOT merge — resolve the conflict file-by-file (keep both where both are needed), or escalate with a comment. A clean three-way merge is fine; a blind replace is never fine.
 - Rule of thumb: a conflict you can't resolve without deleting someone else's work is a coordination problem, not a merge — pause and flag it.
 
+## Migrations — get the version number from the board, never hand-pick
+- **Before creating any `supabase/migrations/*.sql`, call `get_migration_number(name)` on the agent-board MCP.** It allocates the next sortable `<YYYYMMDD><NNNNNN>` and records it in a shared registry the instant it's issued, so two branches can't claim the same version — the collision that aborts `db push` with a duplicate key on `schema_migrations`.
+- Name the file exactly as the returned `filename` (`<version>_<name>.sql`). Never copy a number off `ls` or a sibling branch.
+- `get_last_migration_version()` reports the current high-water mark; the board's freeze indicator popup shows the last number used.
+
 ## Always record the commit on the task
 - After merging, `add_comment` on the task/story with the **merge commit SHA** (and the feature commit SHA if different), e.g. "merged to develop @ <sha>". This makes every board item traceable to code.
 - If a task spans several commits, list them. The board must always answer "which commit closed this?".

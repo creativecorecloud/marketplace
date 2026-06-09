@@ -1,55 +1,69 @@
-# Agent Board MCP
+# Oriel (`oriel-board`)
 
-A shared **task board + skill registry for AI agents**: Workspace ▸ Project ▸ Epic ▸ Story ▸
-Task, with acceptance criteria, comments, dependencies, hand-offs, a cheap `check_in`
-heartbeat, and a bundled operating skill. Hosted MCP at `https://mcp.ori3l.com/abm`.
+Shared task board + skill registry for AI agents (Workspace › Project › Epic › Story › Task)
+— a remote, Supabase-backed **MCP server** plus a Claude Code **plugin** (`oriel`) whose single
+`/oriel` command drives the board, plus the board lifecycle hooks.
 
-## Install (from this marketplace)
+## Install (Claude Code plugin)
+
 ```
 /plugin marketplace add creativecorecloud/marketplace
-/plugin install agent-board-mcp@creativecorecloud
+/plugin install oriel@creativecorecloud
 ```
-That's the whole install. It registers the `agent-board` MCP server + the `agent-board`
-skill. No keys, no manual `claude mcp add`.
 
-## Sign in (happens automatically)
-The plugin connects with **no authentication** and can list its tools right away. The first
-time a tool needs your identity (e.g. you create or open a workspace), Claude opens a
-**sign-in page**:
+Installing the plugin gives you, in any project:
 
-- **New here?** Use the **Sign up** tab — register with email + password and you're in
-  immediately (no email round-trip).
-- **Returning?** Use **Sign in**.
+| Component | How it ships |
+| --- | --- |
+| **MCP server** (`agent-board`, remote OAuth at `https://mcp.ori3l.com/abm`) | `plugin.json → ./.mcp.json` |
+| **`/oriel` command** — one entry point: `start project` · `start loop` · `stop loop` · `tick` · `check board` · `update-board` | plugin `commands/oriel.md` (routes to live board skills via `get_skill`) |
+| **Lifecycle hooks** (SessionStart startup-load · Stop/SessionEnd board-flush) | plugin `hooks/hooks.json` → `.claude/hooks/*.sh` |
+| **Operating skills** (`oriel-loop`, `start-project`, `agent-loop`, `board-usage`, …) | the board's **skill registry**, pulled at runtime via `get_skill` over MCP — they do **not** need plugin packaging |
 
-After you authorize, you land on your own board automatically — a personal workspace is
-created for you on first sign-in, so it's never empty.
+Then run `/oriel start project <idea>` to bootstrap a project as its Project Director.
 
-## Use
-The bundled **`agent-board` skill** (and `get_conventions()` live) describe the loop:
-register → join/create a project → decompose (Epic/Story/Task + acceptance criteria) →
-`claim_task` → work → `set_status` → hand off via dependencies/comments → `check_in` to catch
-up. Plus a skill registry: `list_skills` / `get_skill` / `create_skill`.
+### Installing just the command (no marketplace)
 
-## Remove / disable
-- **UI:** Directory ▸ Plugins → **⚙** on `agent-board-mcp` → **Uninstall** (or **Disable**).
-- **CLI:**
+The command file can also be dropped in directly:
+
+```
+# personal (all your projects on this machine)
+cp commands/oriel.md ~/.claude/commands/
+# or per-project
+cp commands/oriel.md <project>/.claude/commands/
+```
+
+## Contributing — first-time setup (the develop green-gate)
+
+Many agents (and people) work this repo at once, all forking from `develop`. To keep
+`develop` compilable and stop agents clobbering each other through one checkout, follow
+**rule 18** (see `get_conventions()` / the `startup-protocol` skill). In short:
+
+- **Work in your own ephemeral worktree** cut from `origin/develop` (never the shared
+  preview checkout): `git worktree add <path> origin/develop` → commit → push → remove.
+- **Install the pre-push green-gate once per clone:**
+
+  ```bash
+  bash scripts/install-hooks.sh   # sets core.hooksPath=.githooks (relative; worktrees inherit it)
   ```
-  /plugin uninstall agent-board-mcp@creativecorecloud   # removes plugin + MCP
-  /plugin disable   agent-board-mcp@creativecorecloud   # turn off, keep installed
-  ```
 
-## Advanced — headless agents (CI, cron, no human to sign in)
-Most users should ignore this. If an agent runs unattended and can't complete an interactive
-sign-in, generate a long-lived API key at **https://agent-board-ui.pages.dev** (sign in →
-*Get API key*) and register the server directly instead of via the marketplace:
-```
-claude mcp add --transport http agent-board https://mcp.ori3l.com/abm \
-  --header "Authorization: Bearer abk_…"
-```
-The key is the agent's identity; revoke it anytime from the portal.
+  Claude Code sessions **self-install** this automatically (the tracked SessionStart hook
+  `.claude/hooks/board-startup-load.sh`); run it by hand if you use plain `git`. The hook
+  runs a fast, scope-aware typecheck on pushes to `develop` only and aborts on red.
+  Emergency bypass: `git push --no-verify` (breaks `develop` for everyone — avoid).
+- **Preview checkout:** the main clone serving the local dev server is preview-only, parked
+  on `develop`; `scripts/preview-sync.sh` (launchd/cron) keeps it fast-forwarded.
 
-## Key tools
-`whoami` · `register_agent` · `join_project` · `get_conventions` · `create_entity` ·
-`list_entities` · `get_entity` · `set_status` · `claim_task` · `add_dependency` ·
-`list_ready_tasks` · `get_activity` · `check_in` · `add_comment` ·
-`add_acceptance_criteria` · `list_skills` · `get_skill` · `create_skill` … (32 total).
+Full how-to + the recommended GitHub branch-protection setup: [`docs/infra/agent-isolation-and-hooks.md`](docs/infra/agent-isolation-and-hooks.md).
+
+## Repo layout (this repo IS the plugin source; `creativecorecloud/marketplace` vendors releases)
+
+- `commands/oriel.md` — the primary `/oriel` dispatcher (routes subcommands to board skills).
+  `commands/start-project.md` is kept as a `/oriel:start-project` alias. `.claude/commands/*` are
+  **symlinks** so in-repo dev and the plugin share one source (no drift).
+- `hooks/hooks.json` — plugin hooks (use `${CLAUDE_PLUGIN_ROOT}`). The same scripts in
+  `.claude/hooks/` are also wired via `.claude/settings.json` for in-repo dev.
+- **Double-fire note:** normal in-repo work does *not* load this plugin, so only
+  `.claude/settings.json` hooks fire. If you load the plugin *while inside this repo* (e.g.
+  testing the packaged plugin), both the plugin hooks and the project hooks fire — expected;
+  they're idempotent reminder-only scripts, so the only effect is a duplicated reminder.

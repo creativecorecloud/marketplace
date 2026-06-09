@@ -17,6 +17,14 @@ the one task you are working.
 ## Worker Loop (per tick)
 1. `check_in(since=cursor)` first. `should_check=false` → **end the tick (noop)**. Else advance
    the cursor and branch on the counts:
+1b. **Notebook AI queue — any agent is a worker.** `check_in` also returns `ai_jobs_queued` +
+   `ai_job_workspaces[]` (notebook AI jobs waiting in your workspaces). If `ai_jobs_queued>0`,
+   DRAIN it: `claim_ai_job(workspace_id)` → run the prompt on **your OWN model** →
+   `complete_ai_job(job_id, result)` (or `error` on failure). Atomic claim (oldest-first,
+   `SKIP LOCKED`), one in flight, loop until `claim_ai_job` returns `{job:null}`. These are
+   provider-agnostic, so **any** connected agent services them — never leave a queued job
+   stranded (it shows the user "No worker available"). A claim is a contract: always terminate
+   it with `complete_ai_job`. Full contract + per-action prompts: `docs/notebook-ai-worker.md`.
 2. Only if `new_events>0` → `get_activity(since=cursor)` to see what changed. (Skip otherwise.)
 3. If `my_open>0` (you hold an assigned/`in_progress` task):
    - `get_entity(id, include=[criteria,comments,dependencies])` — full detail for THIS task only.

@@ -23,6 +23,10 @@ The product UI has a hard constraint: NO color — grayscale/monospace only. A c
 - Restate the problem and constraints in your own words and get confirmation before proposing a solution.
 
 ## Produce the design spec
+- For a **high-level overview the user can verify** (how the big pieces / epics connect),
+  adopt the **mermaid** skill: author a Mermaid flow chart and store it on the project with
+  `set_project_flowchart`. The user opens the project's **Flow** button to confirm the shape
+  before you detail screens.
 - Information hierarchy: what the user needs first, second, third — ordered top-to-bottom / left-to-right.
 - Layout: regions, columns, density; how grouping and emphasis are achieved without color (rules, indentation, weight, position, monospace alignment).
 - States: define empty, loading, error, and populated for every view. Error and success must be distinguishable by icon/label/text, never hue.
