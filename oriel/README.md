@@ -63,6 +63,23 @@ Full how-to + the recommended GitHub branch-protection setup: [`docs/infra/agent
   **symlinks** so in-repo dev and the plugin share one source (no drift).
 - `hooks/hooks.json` — plugin hooks (use `${CLAUDE_PLUGIN_ROOT}`). The same scripts in
   `.claude/hooks/` are also wired via `.claude/settings.json` for in-repo dev.
+
+### Publishing the plugin
+
+The marketplace users add (`/plugin marketplace add creativecorecloud/marketplace`) is a
+**separate repo** (`creativecorecloud/marketplace`) that serves a **vendored copy** of this
+plugin from its `./oriel` subdir. So a plugin change here only reaches users after it's
+vendored there. Don't hand-copy — run:
+
+```bash
+bash scripts/publish-plugin.sh --dry-run   # preview the diff
+bash scripts/publish-plugin.sh             # vendor + commit + push to the marketplace
+```
+
+It mirrors the plugin payload (`plugin.json`, `.mcp.json`, `commands/`, `hooks/`, `skills/`)
+into `marketplace/oriel`, regenerates `marketplace.json`, and pushes `master`. Then users
+`/plugin marketplace update` → reinstall `oriel@creativecorecloud` → reload. Requires `gh`
+authed with push access to `creativecorecloud/marketplace`.
 - **Double-fire note:** normal in-repo work does *not* load this plugin, so only
   `.claude/settings.json` hooks fire. If you load the plugin *while inside this repo* (e.g.
   testing the packaged plugin), both the plugin hooks and the project hooks fire — expected;
