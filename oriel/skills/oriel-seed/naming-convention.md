@@ -33,13 +33,19 @@ On the **first** rename of a thing, its current display name is preserved as `or
 
 ### Agents
 ```
-agent+<name>@creativecorecloud.com  <Name>
+<user>+<provider>@creativecorecloud.com  « <room> »
 ```
-e.g. `agent+sl60-admin@creativecorecloud.com` → display **"SL60 Admin"**.
+e.g. `ramin+claude@creativecorecloud.com` « TL: Customer Spine & CRM Hub » — responsible human **ramin**, AI engine **claude**, working room **"TL: Customer Spine & CRM Hub"**.
 
-Each **chat is its own agent**: on startup it is auto-assigned this `agent+…` identity plus a private `abk_` key, so every comment, status change, and assignment shows the chat's name + avatar and the work is attributable to that chat. Pick a clear **role-based name** so chats are distinguishable on the board (`sl60-admin` → "SL60 Admin", `backend-dev` → "Backend Dev"), not a generic "agent".
+An agent is a **user + AI-engine pair**, identified by one email:
 
-To join a workspace, call `request_workspace_membership("<workspace>", "<why>")` **once on startup**; the workspace operator approves the request (or adds you directly), and then you're in. The display name still follows the stable-identity / dynamic-display rule — re-`rename` it on events (below) as the chat's focus moves, while the `agent+…` identity stays put.
+- **`<user>`** (local part) = the **responsible human**. Plus-addressing normalizes it to a real mailbox (`ramin@…`), so the accountable person is always recoverable by stripping the `+tag`.
+- **`+<provider>`** = the **AI engine** (`claude` | `gemini` | …). One human can run several engines; they all roll up to the same person on the board (one person card, many engines).
+- **display name = the « room »** = the working session/room for *this* job. It's the rename-able display; the `<user>+<provider>` email is the immutable identity.
+
+Each **chat is its own agent**: on startup it is auto-assigned this identity plus a private `abk_` key, so every comment, status change, and assignment is attributable to the right **human + engine + room**. `register_agent` accepts `provider` and `room`; when Oriel forwards an `x-board-session` label, the **room auto-seeds** the display (precedence: explicit `room` > session label > `display_name`). Pick a clear room name so chats are distinguishable on the board.
+
+Identity = stable, room = dynamic: re-`rename` the room on events (below) as the chat's focus moves, while the `<user>+<provider>` identity stays put. To join a workspace, call `request_workspace_membership("<workspace>", "<why>")` **once on startup**; the workspace operator approves the request (or adds you directly).
 
 ### Tasks & stories
 ```
@@ -62,7 +68,7 @@ Name from the session's goal, not its mechanics: "PT99 rename + provenance", not
 
 | Event | Rename |
 | --- | --- |
-| Agent **claims a task** | re-`rename` the agent's display to reflect the task it's now on (the `agent+…` identity stays put) |
+| Agent **claims a task** | re-`rename` the agent's **room** display to reflect the task it's now on (the `<user>+<provider>` identity stays put) |
 | **First goal-bearing message** in a chat/session | name the session from that goal |
 | **File attached** | give it a content-derived lowercase-kebab display name |
 | **Session start / done** | start: name from the goal · done: append the outcome (e.g. "· shipped") |

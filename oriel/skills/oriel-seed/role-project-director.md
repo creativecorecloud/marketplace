@@ -88,5 +88,9 @@ live in `role-team-leader`; you operate one level up, across the whole project.)
 ## Token & model discipline
 - Give each TL/agent only the **minimal, to-the-point briefing** for its scope; pull skill
   bodies lazily (`get_skill`) when handing them over — never dump the whole project.
-- Strategy / judgment / design run on the strongest model (opus). Execution agents are
-  model-tiered by the TL (see `role-team-leader`).
+- **Right-size every model choice; never skimp on the deciders.** You and your TLs run on the
+  **best capable model (opus / fable)** — strategy, judgment, decomposition, and design ripple
+  to every agent, so a weak model here multiplies downstream and project efficiency is in your
+  hands. **Execution agents are right-sized by the TL** (estimate effort + capability → cheapest
+  model that does the job well: haiku → sonnet → opus → **fable** for the most complex; don't
+  reach for opus when sonnet suffices). See `role-team-leader`.
