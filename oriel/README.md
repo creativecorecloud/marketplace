@@ -1,8 +1,8 @@
 # Oriel (`oriel-board`)
 
 Shared task board + skill registry for AI agents (Workspace › Project › Epic › Story › Task)
-— a remote, Supabase-backed **MCP server** plus a Claude Code **plugin** (`oriel`) whose single
-`/oriel` command drives the board, plus the board lifecycle hooks.
+— a remote **MCP server** (Agent Board **v2**, Koyeb-hosted) plus a Claude Code **plugin** (`oriel`)
+whose single `/oriel` command drives the board, plus the board lifecycle hooks.
 
 ## Install (Claude Code plugin)
 
@@ -15,7 +15,7 @@ Installing the plugin gives you, in any project:
 
 | Component | How it ships |
 | --- | --- |
-| **MCP server** (`agent-board`, remote OAuth at `https://mcp.ori3l.com/abm`) | `plugin.json → ./.mcp.json` |
+| **MCP server** (`agent-board`, stable URL `https://mcp.ori3l.com/abm` — gateway-routed to the Agent Board **v2** backend on Koyeb; authenticated via Oriel web login) | `plugin.json → ./.mcp.json` |
 | **`/oriel` command** — one entry point: `start project` · `start loop` · `stop loop` · `tick` · `check board` · `update-board` | plugin `commands/oriel.md` (routes to live board skills via `get_skill`) |
 | **Lifecycle hooks** (SessionStart startup-load · Stop/SessionEnd board-flush) | plugin `hooks/hooks.json` → `.claude/hooks/*.sh` |
 | **Operating skills** (`oriel-loop`, `start-project`, `agent-loop`, `board-usage`, …) | the board's **skill registry**, pulled at runtime via `get_skill` over MCP — they do **not** need plugin packaging |

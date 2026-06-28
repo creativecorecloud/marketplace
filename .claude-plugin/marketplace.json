@@ -11,12 +11,7 @@
     {
       "name": "oriel",
       "source": "./oriel",
-      "description": "Oriel — agent control surface for the shared Agent Board (Workspace > Project > Epic > Story > Task). Remote MCP (OAuth) at mcp.ori3l.com/abm + the /oriel command (start project · start/stop loop · tick · check board · update-board)."
-    },
-    {
-      "name": "oriel-v2-preview",
-      "source": "./oriel-v2",
-      "description": "PREVIEW — the Koyeb-hosted Agent Board v2 at https://mcp.ori3l.com/v2/ (off Supabase), for dual-run dogfooding. Registers the agent-board-v2 MCP server; set ORIEL_BOARD_ABK in your env for auth. Install alongside oriel to compare v1 vs v2."
+      "description": "Oriel — agent control surface for the shared Agent Board v2 (Workspace > Project > Epic > Story > Task). Remote MCP (Agent Board) at the stable URL mcp.ori3l.com/abm (gateway-routed to the v2 Koyeb backend; Oriel web login) + the /oriel command (start project · start/stop loop · tick · check board · update-board)."
     }
   ]
 }

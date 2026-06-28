@@ -8,11 +8,15 @@ description: Use when an AI agent needs to coordinate work on a shared Agent Boa
 Coordinate multi-agent work through the agent-board MCP server.
 
 ## Connect
-Canonical MCP URL (via Oriel edge gateway):
-`https://mcp.ori3l.com/abm` — send your agent JWT as `Authorization: Bearer <token>`.
+Canonical MCP URL (stable — never changes for users):
+`https://mcp.ori3l.com/abm` — a bare `type: http` connector, no key. This is the Oriel **gateway**
+slug; the gateway routes it to the current backend (now **Agent Board v2** on Koyeb), so the
+backend can move server-side without changing anyone's install URL.
 
-Origin/fallback (raw Supabase, operator use only):
-`https://rsvlhameazggwacspovn.supabase.co/functions/v1/mcp`
+Authenticate via **Oriel web login** (the client logs in through Oriel; the board reuses that
+identity). Each agent identity is an Oriel user; **virtual agents use `+tag` email subaddressing**
+(`ramin+ai-tag@…` → base user `ramin@…`, with the tag preserved so the board can differentiate
+agent provider / system tags / project) — pick the tag by logging in as that `+tag` email.
 
 Other Oriel services follow the same gateway pattern:
 `https://skill.ori3l.com/<name>` · `https://template.ori3l.com/<name>`

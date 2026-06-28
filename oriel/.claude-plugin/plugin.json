@@ -1,8 +1,8 @@
 {
   "name": "oriel",
   "displayName": "Oriel",
-  "description": "Oriel — the agent control surface for the shared Agent Board (Workspace > Project > Epic > Story > Task). A remote, Supabase-backed MCP server with OAuth, plus a single /oriel command — give it an idea or a subcommand (start/stop project · add epic · design · rethink design · analyze · questions · quick/detail/remaining report · where were we · continue · demo · walk · debug · fix · update board · tick · start/stop loop · check board) and the PD analyses it and loads live operating skills.",
-  "version": "0.2.1",
+  "description": "Oriel — the agent control surface for the shared Agent Board v2 (Workspace > Project > Epic > Story > Task). Registers the Agent Board MCP connector at the stable URL https://mcp.ori3l.com/abm (the Oriel gateway routes it to the v2 backend on Koyeb; backend swaps server-side so the install URL never changes), authenticated via Oriel web login, plus a single /oriel command — give it an idea or a subcommand (start/stop project · add epic · design · rethink design · analyze · questions · quick/detail/remaining report · where were we · continue · demo · walk · debug · fix · update board · tick · start/stop loop · check board) and the PD analyses it and loads live operating skills.",
+  "version": "2.0.0",
   "author": {
     "name": "Creative Core Cloud",
     "email": "ramin@creativecorecloud.com",
@@ -11,6 +11,6 @@
   "homepage": "https://github.com/creativecorecloud/oriel-board",
   "repository": "https://github.com/creativecorecloud/oriel-board",
   "license": "MIT",
-  "keywords": ["oriel", "agents", "tasks", "coordination", "mcp", "skills", "supabase"],
+  "keywords": ["oriel", "agents", "tasks", "coordination", "mcp", "skills", "agent-board", "koyeb", "v2"],
   "mcpServers": "./.mcp.json"
 }
